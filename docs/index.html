@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hotel Management System</title>
+<meta name="description" content="Java Swing hotel management system with MariaDB, Object Oriented Programming coursework at UTeM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* navy and gold from the app's opening screen, screenshots in a grid per menu */
+  --bg: #f4f5f8;
+  --panel: #ffffff;
+  --ink: #141b2b;
+  --muted: #5a6475;
+  --line: #dde1e8;
+  --navy: #0a193c;
+  --gold: #c99a06;
+  --display: "Libre Baskerville", Georgia, serif;
+  --body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0d1220; --panel: #161d2e; --ink: #e8ecf4; --muted: #a1abbd; --line: #2a3347; --gold: #f2c231; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #0d1220; --panel: #161d2e; --ink: #e8ecf4; --muted: #a1abbd; --line: #2a3347; --gold: #f2c231; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--body); }
+a { color: inherit; }
+.hero { background: var(--navy); color: #fff; }
+.hero-in { max-width: 1180px; margin: 0 auto; padding: 48px 20px 40px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 36px; align-items: center; }
+.kicker { color: #f2c231; font-weight: 700; margin: 0; }
+h1 { font: 700 clamp(30px, 4.4vw, 46px)/1.15 var(--display); margin: 8px 0 14px; text-wrap: balance; }
+.hero p.lead { margin: 0 0 22px; color: #d3d9e6; max-width: 52ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; padding: 10px 18px; border-radius: 6px; font-weight: 700; text-decoration: none; border: 2px solid #f2c231; }
+.btn.primary { background: #f2c231; color: var(--navy); }
+.btn.ghost { color: #fff; }
+.btn:focus-visible, .shot:focus-visible, nav a:focus-visible { outline: 3px solid #f2c231; outline-offset: 3px; }
+.hero img { width: 100%; border-radius: 8px; box-shadow: 0 18px 40px rgba(0,0,0,.35); display: block; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; padding: 0; list-style: none; }
+.facts li { border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 3px 12px; font-size: 14px; }
+nav.tabs { position: sticky; top: 0; z-index: 2; background: var(--panel); border-bottom: 1px solid var(--line); }
+nav.tabs div { max-width: 1180px; margin: 0 auto; padding: 10px 20px; display: flex; gap: 18px; flex-wrap: wrap; font-weight: 600; }
+nav.tabs a { text-decoration: none; color: var(--muted); }
+nav.tabs a:hover { color: var(--ink); }
+main { max-width: 1180px; margin: 0 auto; padding: 32px 20px 56px; display: grid; gap: 44px; }
+.group { display: grid; gap: 16px; scroll-margin-top: 60px; }
+.group-head h2, .pricing h2 { font: 700 24px/1.25 var(--display); margin: 0; }
+.group-head p { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+figure { margin: 0; display: grid; gap: 6px; }
+figcaption { font-weight: 600; color: var(--muted); font-size: 15px; }
+.shot { padding: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); cursor: zoom-in; overflow: hidden; aspect-ratio: 16 / 10; }
+.shot img { width: 100%; height: 100%; object-fit: contain; background: #20283a; display: block; }
+.pricing { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 22px; display: grid; gap: 14px; }
+.tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-size: 14px; }
+td:last-child, th:last-child { text-align: right; }
+.example { margin: 0; color: var(--muted); }
+.example strong { color: var(--ink); }
+footer { border-top: 1px solid var(--line); color: var(--muted); text-align: center; padding: 22px 20px; font-size: 15px; }
+.viewer { position: fixed; inset: 0; z-index: 5; background: rgba(6, 10, 20, .9); display: grid; place-items: center; padding: 16px; }
+.viewer[hidden] { display: none; }
+.viewer img { max-width: 100%; max-height: 90%; border-radius: 6px; }
+.viewer button { position: absolute; top: 14px; right: 16px; font: 700 16px var(--body); padding: 8px 14px; border: 0; border-radius: 6px; cursor: pointer; }
+@media (max-width: 860px) { .hero-in { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .grid { grid-template-columns: 1fr; } body { font-size: 16px; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-in">
+    <div>
+      <p class="kicker">Object Oriented Programming, Y2S1</p>
+      <h1>Hotel Management System</h1>
+      <p class="lead">A Java Swing desktop app for front desk staff. Register customers and rooms, take bookings with meals and member discounts, then bill and collect payment. Everything is saved in MariaDB through JDBC.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/cheah20/HotelManagementSystem">View on GitHub</a>
+        <a class="btn ghost" href="#view">See the screens</a>
+      </div>
+      <ul class="facts"><li>Java</li><li>Swing</li><li>MariaDB</li><li>XAMPP</li><li>JDBC</li></ul>
+    </div>
+    <img src="screenshots/new-booking.png" alt="New booking window">
+  </div>
+</header>
+<nav class="tabs" aria-label="Sections"><div><a href="#login-and-dashboard">Login and Dashboard</a><a href="#hotel-management">Hotel Management</a><a href="#admin">Admin</a><a href="#view">View</a><a href="#pricing">Pricing</a></div></nav>
+<main>
+<section class="group" id="login-and-dashboard"><div class="group-head"><h2>Login and Dashboard</h2><p>Staff sign in with their ID and password, then use the three menus on the dashboard.</p></div><div class="grid"><figure><button class="shot" type="button" data-src="screenshots/opening.jpg" aria-label="Enlarge Opening screen"><img src="screenshots/opening.jpg" alt="Opening screen" loading="lazy"></button><figcaption>Opening screen</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/login.png" aria-label="Enlarge Staff login"><img src="screenshots/login.png" alt="Staff login" loading="lazy"></button><figcaption>Staff login</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/dashboard.jpg" aria-label="Enlarge Dashboard"><img src="screenshots/dashboard.jpg" alt="Dashboard" loading="lazy"></button><figcaption>Dashboard</figcaption></figure></div></section><section class="group" id="hotel-management"><div class="group-head"><h2>Hotel Management</h2><p>Register customers, rooms and dining tables, and make bookings.</p></div><div class="grid"><figure><button class="shot" type="button" data-src="screenshots/menu-hotel.jpg" aria-label="Enlarge Hotel Management menu"><img src="screenshots/menu-hotel.jpg" alt="Hotel Management menu" loading="lazy"></button><figcaption>Hotel Management menu</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-customer.png" aria-label="Enlarge New customer"><img src="screenshots/new-customer.png" alt="New customer" loading="lazy"></button><figcaption>New customer</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-room.png" aria-label="Enlarge New room"><img src="screenshots/new-room.png" alt="New room" loading="lazy"></button><figcaption>New room</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-booking.png" aria-label="Enlarge New booking"><img src="screenshots/new-booking.png" alt="New booking" loading="lazy"></button><figcaption>New booking</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-table.png" aria-label="Enlarge New dining table"><img src="screenshots/new-table.png" alt="New dining table" loading="lazy"></button><figcaption>New dining table</figcaption></figure></div></section><section class="group" id="admin"><div class="group-head"><h2>Admin</h2><p>Add staff accounts, bill extra charges and record walk-in payments.</p></div><div class="grid"><figure><button class="shot" type="button" data-src="screenshots/menu-admin.jpg" aria-label="Enlarge Admin menu"><img src="screenshots/menu-admin.jpg" alt="Admin menu" loading="lazy"></button><figcaption>Admin menu</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-staff.png" aria-label="Enlarge New staff"><img src="screenshots/new-staff.png" alt="New staff" loading="lazy"></button><figcaption>New staff</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-invoice.png" aria-label="Enlarge New invoice"><img src="screenshots/new-invoice.png" alt="New invoice" loading="lazy"></button><figcaption>New invoice</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/new-receipt.png" aria-label="Enlarge New receipt"><img src="screenshots/new-receipt.png" alt="New receipt" loading="lazy"></button><figcaption>New receipt</figcaption></figure></div></section><section class="group" id="view"><div class="group-head"><h2>View</h2><p>Every list in one menu. Click a room, table or confirmed booking to update it, or settle an unpaid invoice.</p></div><div class="grid"><figure><button class="shot" type="button" data-src="screenshots/menu-view.jpg" aria-label="Enlarge View menu"><img src="screenshots/menu-view.jpg" alt="View menu" loading="lazy"></button><figcaption>View menu</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-bookings.png" aria-label="Enlarge Bookings"><img src="screenshots/view-bookings.png" alt="Bookings" loading="lazy"></button><figcaption>Bookings</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-rooms.png" aria-label="Enlarge Rooms"><img src="screenshots/view-rooms.png" alt="Rooms" loading="lazy"></button><figcaption>Rooms</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-tables.png" aria-label="Enlarge Dining tables"><img src="screenshots/view-tables.png" alt="Dining tables" loading="lazy"></button><figcaption>Dining tables</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-customers.png" aria-label="Enlarge Customers"><img src="screenshots/view-customers.png" alt="Customers" loading="lazy"></button><figcaption>Customers</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-staff.png" aria-label="Enlarge Staff"><img src="screenshots/view-staff.png" alt="Staff" loading="lazy"></button><figcaption>Staff</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-invoices.png" aria-label="Enlarge Unpaid invoices"><img src="screenshots/view-invoices.png" alt="Unpaid invoices" loading="lazy"></button><figcaption>Unpaid invoices</figcaption></figure><figure><button class="shot" type="button" data-src="screenshots/view-receipts.png" aria-label="Enlarge Receipts"><img src="screenshots/view-receipts.png" alt="Receipts" loading="lazy"></button><figcaption>Receipts</figcaption></figure></div></section>
+  <section class="pricing" id="pricing">
+    <h2>Pricing</h2>
+    <div class="tables">
+      <table><thead><tr><th>Room</th><th>Per night</th></tr></thead><tbody>
+        <tr><td>Deluxe Single</td><td>RM 39.99</td></tr><tr><td>Deluxe Double</td><td>RM 59.99</td></tr><tr><td>Premium Suite</td><td>RM 99.99</td></tr></tbody></table>
+      <table><thead><tr><th>Meal</th><th>Per day</th></tr></thead><tbody>
+        <tr><td>Breakfast</td><td>RM 39.99</td></tr><tr><td>Lunch</td><td>RM 59.99</td></tr><tr><td>Dinner</td><td>RM 88.88</td></tr></tbody></table>
+      <table><thead><tr><th>Member level</th><th>Discount</th></tr></thead><tbody>
+        <tr><td>1</td><td>0%</td></tr><tr><td>2 / 3</td><td>5% / 10%</td></tr><tr><td>4 / 5</td><td>15% / 20%</td></tr></tbody></table>
+    </div>
+    <p class="example">A level 4 customer in a Deluxe Double for 2 nights with breakfast and dinner: (59.99 + 39.99 + 88.88) &times; 2 = RM 377.72, minus 15% = <strong>RM 321.06</strong>.</p>
+  </section>
+</main>
+<footer>Faculty of Artificial Intelligence and Cyber Security, UTeM. Sample data only, all names and numbers are made up.</footer>
+<div class="viewer" id="viewer" hidden><button type="button" id="close">Close</button><img id="big" alt=""></div>
+<script>
+const viewer = document.getElementById("viewer"), big = document.getElementById("big");
+document.querySelectorAll(".shot").forEach(s => s.addEventListener("click", () => {
+  big.src = s.dataset.src; big.alt = s.querySelector("img").alt; viewer.hidden = false; document.getElementById("close").focus();
+}));
+const shut = () => { viewer.hidden = true; };
+document.getElementById("close").addEventListener("click", shut);
+viewer.addEventListener("click", e => { if (e.target === viewer) shut(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") shut(); });
+</script>
+</body>
+</html>
