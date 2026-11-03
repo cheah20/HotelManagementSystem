@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hotel Management System</title>
 <meta name="description" content="Java Swing hotel management system with MariaDB, Object Oriented Programming coursework at UTeM.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
   /* the page is the app: swing title bar, menu bar, white windows on a grey desk */
@@ -59,25 +57,7 @@ h2 { margin: 0; font-size: 15px; border-bottom: 2px solid var(--ink); padding-bo
 figcaption { font-size: 14px; color: var(--muted); max-width: 60ch; }
 figcaption b { color: var(--ink); display: block; font-size: 15px; }
 
-.desk { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
-.desk h3 { margin: 0 0 4px; font-size: 18px; }
-.desk .note { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
-.board { list-style: none; margin: 0; padding: 18px; background: #5b4636; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; border-radius: 4px; }
-.tag { background: var(--window); border-top: 6px solid; padding: 10px 12px 12px; display: grid; gap: 2px; box-shadow: 0 2px 0 rgba(0,0,0,.25); }
-.tag.available { border-color: var(--available); } .tag.occupied { border-color: var(--occupied); } .tag.preparing { border-color: var(--preparing); }
-.room-no { font: 600 20px var(--receipt); }
-.room-type { font-size: 13px; color: var(--muted); }
-.room-status { font-size: 13px; font-weight: 700; }
-.tag.available .room-status { color: var(--available); } .tag.occupied .room-status { color: var(--occupied); } .tag.preparing .room-status { color: var(--preparing); }
-
-.receipt { background: var(--window); font: 14px/1.7 var(--receipt); padding: 20px 22px 26px; box-shadow: 3px 3px 0 rgba(0,0,0,.12);
-  -webkit-mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x; mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x; }
-.receipt h3 { font: 600 15px var(--receipt); margin: 0 0 10px; text-align: center; }
-.receipt .row { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; }
-.receipt .row span:first-child { color: var(--muted); }
-.receipt .sep { border-top: 1px dashed var(--rule); margin: 10px 0; }
-.receipt .total span { font-weight: 600; color: var(--ink) !important; font-size: 16px; }
-.prices { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.prices { max-width: 560px; font-size: 15px; color: var(--muted); }
 .prices table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
 .prices td { padding: 3px 0; border-bottom: 1px solid var(--rule); }
 .prices td:last-child { text-align: right; color: var(--ink); }
@@ -87,11 +67,10 @@ footer div { max-width: 1120px; margin: 0 auto; padding: 22px 16px 40px; font-si
 footer code { font-family: var(--receipt); font-size: 13px; color: var(--ink); background: var(--window); padding: 1px 5px; }
 
 @media (max-width: 860px) {
-  .intro, .desk { grid-template-columns: 1fr; }
+  .intro { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .screens { grid-template-columns: 1fr; }
-  .board { grid-template-columns: repeat(2, 1fr); }
   .titlebar .controls { display: none; }
 }
 </style>
@@ -100,7 +79,7 @@ footer code { font-family: var(--receipt); font-size: 13px; color: var(--ink); b
 <div class="titlebar" aria-hidden="true"><span class="icon"></span>Hotel Management System<span class="controls">&#8211;&#9633;&#215;</span></div>
 <header class="menubar">
   <nav aria-label="Sections">
-    <a href="#hotel">Hotel Management</a><a href="#admin">Admin</a><a href="#view">View</a><a href="#desk">Prices</a>
+    <a href="#hotel">Hotel Management</a><a href="#admin">Admin</a><a href="#view">View</a><a href="#prices">Prices</a>
     <a class="repo" href="https://github.com/cheah20/HotelManagementSystem">Source on GitHub</a>
   </nav>
 </header>
@@ -122,26 +101,16 @@ footer code { font-family: var(--receipt); font-size: 13px; color: var(--ink); b
 
 <section class="menu-section" id="hotel"><h2><span class="menu-name">Hotel Management</span></h2><div class="screens"><figure class="wide"><a class="shot" href="screenshots/menu-hotel.jpg"><img src="screenshots/menu-hotel.jpg" alt="The Hotel Management menu window" loading="lazy"></a><figcaption><b>The Hotel Management menu</b> Front desk work: new customers, rooms, bookings and dining tables.</figcaption></figure><figure class="wide"><a class="shot" href="screenshots/new-booking.png"><img src="screenshots/new-booking.png" alt="New Booking window" loading="lazy"></a><figcaption><b>New Booking</b> Pick a customer and an available room, set the dates and meals. The total with member discount is shown before saving.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-customer.png"><img src="screenshots/new-customer.png" alt="New Customer window" loading="lazy"></a><figcaption><b>New Customer</b> ID, name, IC, phone, gender and member level 1 to 5.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-room.png"><img src="screenshots/new-room.png" alt="New Room window" loading="lazy"></a><figcaption><b>New Room</b> Three room types, each with its own nightly price.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-table.png"><img src="screenshots/new-table.png" alt="New Dining Table window" loading="lazy"></a><figcaption><b>New Dining Table</b> Tables start as Available.</figcaption></figure></div></section><section class="menu-section" id="admin"><h2><span class="menu-name">Admin</span></h2><div class="screens"><figure class="wide"><a class="shot" href="screenshots/menu-admin.jpg"><img src="screenshots/menu-admin.jpg" alt="The Admin menu window" loading="lazy"></a><figcaption><b>The Admin menu</b> Staff accounts and billing.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-staff.png"><img src="screenshots/new-staff.png" alt="New Staff window" loading="lazy"></a><figcaption><b>New Staff</b> Each staff member logs in with their own ID and password.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-invoice.png"><img src="screenshots/new-invoice.png" alt="New Invoice window" loading="lazy"></a><figcaption><b>New Invoice</b> Bill an extra charge such as an extra bed.</figcaption></figure><figure class=""><a class="shot" href="screenshots/new-receipt.png"><img src="screenshots/new-receipt.png" alt="New Receipt window" loading="lazy"></a><figcaption><b>New Receipt</b> Record a walk-in payment. It adds to the customer&#x27;s total paid.</figcaption></figure></div></section><section class="menu-section" id="view"><h2><span class="menu-name">View</span></h2><div class="screens"><figure class="wide"><a class="shot" href="screenshots/menu-view.jpg"><img src="screenshots/menu-view.jpg" alt="The View menu window" loading="lazy"></a><figcaption><b>The View menu</b> Every list the hotel keeps.</figcaption></figure><figure class="wide"><a class="shot" href="screenshots/view-bookings.png"><img src="screenshots/view-bookings.png" alt="Bookings window" loading="lazy"></a><figcaption><b>Bookings</b> Click a confirmed booking to check out or cancel it. A paid booking cannot be cancelled.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-rooms.png"><img src="screenshots/view-rooms.png" alt="Rooms window" loading="lazy"></a><figcaption><b>Rooms</b> Click a room to set it Available, Occupied or Preparing.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-tables.png"><img src="screenshots/view-tables.png" alt="Dining Tables window" loading="lazy"></a><figcaption><b>Dining Tables</b> Same three statuses as rooms.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-customers.png"><img src="screenshots/view-customers.png" alt="Customers window" loading="lazy"></a><figcaption><b>Customers</b> Upgrade a level, up to 5, or delete a customer with no bookings.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-staff.png"><img src="screenshots/view-staff.png" alt="Staff window" loading="lazy"></a><figcaption><b>Staff</b> Remove a staff member who has resigned.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-invoices.png"><img src="screenshots/view-invoices.png" alt="Unpaid Invoices window" loading="lazy"></a><figcaption><b>Unpaid Invoices</b> Settle Payment turns an invoice into a receipt.</figcaption></figure><figure class=""><a class="shot" href="screenshots/view-receipts.png"><img src="screenshots/view-receipts.png" alt="Receipts window" loading="lazy"></a><figcaption><b>Receipts</b> Every payment received.</figcaption></figure></div></section>
 
-  <section class="desk" id="desk">
-    <div>
-      <h3>Rooms in the sample data</h3>
-      <p class="note">The same colours the Rooms list uses. Booking a room makes it Occupied, checking out leaves it Preparing for cleaning.</p>
-      <ul class="board"><li class="tag occupied"><span class="room-no">R0101</span><span class="room-type">Deluxe Single</span><span class="room-status">Occupied</span></li><li class="tag available"><span class="room-no">R0102</span><span class="room-type">Deluxe Single</span><span class="room-status">Available</span></li><li class="tag available"><span class="room-no">R0103</span><span class="room-type">Deluxe Single</span><span class="room-status">Available</span></li><li class="tag preparing"><span class="room-no">R0201</span><span class="room-type">Deluxe Double</span><span class="room-status">Preparing</span></li><li class="tag available"><span class="room-no">R0202</span><span class="room-type">Deluxe Double</span><span class="room-status">Available</span></li><li class="tag available"><span class="room-no">R0203</span><span class="room-type">Deluxe Double</span><span class="room-status">Available</span></li><li class="tag occupied"><span class="room-no">R0301</span><span class="room-type">Premium Suite</span><span class="room-status">Occupied</span></li><li class="tag available"><span class="room-no">R0302</span><span class="room-type">Premium Suite</span><span class="room-status">Available</span></li></ul>
-    </div>
-    <div>
-      <div class="receipt" role="group" aria-label="Example booking">
-        <h3>BOOKING CONFIRMATION</h3>
-        <div class="lines"><div class="row"><span>Customer</span><span>Wong Kah Chun, Level 4</span></div><div class="row"><span>Room</span><span>R0202 Deluxe Double</span></div><div class="row"><span>Check-in</span><span>10/11/2026 15:30</span></div><div class="row"><span>Check-out</span><span>12/11/2026</span></div><div class="row"><span>Nights</span><span>2</span></div><div class="row"><span>Meals</span><span>Breakfast, Dinner</span></div><div class="sep"></div><div class="row"><span>Subtotal</span><span>RM 377.72</span></div><div class="row"><span>Discount 15%</span><span>&minus; RM 56.66</span></div><div class="sep"></div><div class="row total"><span>Total</span><span>RM 321.06</span></div></div>
-      </div>
-      <div class="prices">
-        <table>
-          <tr><td>Deluxe Single, per night</td><td>RM 39.99</td></tr>
-          <tr><td>Deluxe Double, per night</td><td>RM 59.99</td></tr>
-          <tr><td>Premium Suite, per night</td><td>RM 99.99</td></tr>
-          <tr><td>Breakfast / Lunch / Dinner, per day</td><td>RM 39.99 / 59.99 / 88.88</td></tr>
-          <tr><td>Member level 1 to 5</td><td>0% to 20% off</td></tr>
-        </table>
-      </div>
+  <section class="menu-section" id="prices">
+    <h2><span class="menu-name">Prices</span></h2>
+    <div class="prices">
+      <table>
+        <tr><td>Deluxe Single, per night</td><td>RM 39.99</td></tr>
+        <tr><td>Deluxe Double, per night</td><td>RM 59.99</td></tr>
+        <tr><td>Premium Suite, per night</td><td>RM 99.99</td></tr>
+        <tr><td>Breakfast / Lunch / Dinner, per day</td><td>RM 39.99 / 59.99 / 88.88</td></tr>
+        <tr><td>Member level 1 to 5</td><td>0% to 20% off</td></tr>
+      </table>
     </div>
   </section>
 </main>
